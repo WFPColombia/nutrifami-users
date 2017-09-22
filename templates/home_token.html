@@ -72,11 +72,11 @@ angular.module('TokenApp', ['satellizer'])
         console.log("{% url 'login_social_token_user' provider='google-oauth2' %}")
         $authProvider.facebook({
             //url: "{% url 'login_social_token_user' provider='facebook' %}",
-            url: "http://localhost:8000/api/login/social/token_user/facebook",
+            url: "http://usuarios.nutrifami.org/api/login/social/token_user/facebook",
             clientId: '126883721233688'
         });
         $authProvider.google({
-            url: "http://localhost:8000/api/login/social/token_user/google-oauth2",
+            url: "http://usuarios.nutrifami.org/api/login/social/token_user/google-oauth2",
             clientId: '898085701705-07ja94k2e3r3b81oqg2baih6q63ih8i3.apps.googleusercontent.com',
             redirectUri: "http://localhost:8000/"
         });
