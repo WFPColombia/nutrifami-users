@@ -181,8 +181,8 @@ AUTH_USER_MODEL = 'usuarios.CustomUser'
 
 # social auth settings
 # valid redirect domain for all apps: http://restsocialexample.com:8000/
-SOCIAL_AUTH_FACEBOOK_KEY = '126883721233688'
-SOCIAL_AUTH_FACEBOOK_SECRET = 'e3c68fe71f6fdb66a52e34cb4e40aaa2'
+SOCIAL_AUTH_FACEBOOK_KEY = '277975186032137'
+SOCIAL_AUTH_FACEBOOK_SECRET = '2c166031eb9032b92d1aa149e5fd1f2c'
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email', ]
 SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
     'fields': ','.join([
@@ -201,7 +201,6 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = ['email', ]
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.facebook.FacebookOAuth2',
     'social_core.backends.google.GoogleOAuth2',
-    'social_core.backends.twitter.TwitterOAuth',  # OAuth1.0
     'django.contrib.auth.backends.ModelBackend',
 )
 
@@ -213,6 +212,7 @@ SOCIAL_AUTH_PIPELINE = (
     'usuarios.social_pipeline.check_for_email',  # custom action
     'social_core.pipeline.social_auth.social_user',
     'social_core.pipeline.user.get_username',
+    'social_core.pipeline.social_auth.associate_by_email',  # <--- enable this one
     'social_core.pipeline.user.create_user',
     'social_core.pipeline.social_auth.associate_user',
     'social_core.pipeline.social_auth.load_extra_data',
