@@ -181,8 +181,12 @@ AUTH_USER_MODEL = 'usuarios.CustomUser'
 
 # social auth settings
 # valid redirect domain for all apps: http://restsocialexample.com:8000/
-SOCIAL_AUTH_FACEBOOK_KEY = '277975186032137'
-SOCIAL_AUTH_FACEBOOK_SECRET = '2c166031eb9032b92d1aa149e5fd1f2c'
+if platform.linux_distribution()[2] == 'Maipo':
+    SOCIAL_AUTH_FACEBOOK_KEY = '126883721233688'
+    SOCIAL_AUTH_FACEBOOK_SECRET = 'e3c68fe71f6fdb66a52e34cb4e40aaa2'
+else:
+    SOCIAL_AUTH_FACEBOOK_KEY = '277975186032137'
+    SOCIAL_AUTH_FACEBOOK_SECRET = '2c166031eb9032b92d1aa149e5fd1f2c'
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email', ]
 SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
     'fields': ','.join([
