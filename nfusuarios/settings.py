@@ -72,7 +72,8 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
-
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
                 'django.contrib.auth.context_processors.auth',
                 'django.template.context_processors.debug',
                 'django.template.context_processors.i18n',
@@ -109,6 +110,7 @@ if platform.linux_distribution()[2] == 'Maipo':
         ),
         'DEFAULT_AUTHENTICATION_CLASSES': (
             #'rest_framework.authentication.TokenAuthentication',
+            #'rest_framework.authentication.SessionAuthentication',
         )
     }
 else:

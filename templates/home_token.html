@@ -70,10 +70,10 @@ angular.module('TokenApp', ['satellizer'])
             clientId: '126883721233688'
         });
         $authProvider.google({
-            //url: "http://usuarios.nutrifami.org/api/login/social/token_user/google-oauth2",
-            url: "http://localhost:8000/api/login/social/token_user/google-oauth2",
+            url: "http://usuarios.nutrifami.org/api/login/social/token_user/google-oauth2",
+            //url: "http://localhost:8000/api/login/social/token_user/google-oauth2",
             clientId: '898085701705-07ja94k2e3r3b81oqg2baih6q63ih8i3.apps.googleusercontent.com',
-            redirectUri: "http://localhost:8000/"
+            redirectUri: "http://usuarios.nutrifami.org"
         });
 
         $authProvider.authToken = 'Token';
@@ -92,7 +92,9 @@ angular.module('TokenApp', ['satellizer'])
             $auth.authenticate(provider).then(function(response) {
                 $auth.setToken(response.data.token);
                 set_user(response);
-            });
+            }).catch(function(response){
+		console.log(response);		
+});
         };
 
         $scope.logout = function() {
