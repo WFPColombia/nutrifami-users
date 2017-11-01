@@ -61,19 +61,20 @@ function set_user(response) {
 
 angular.module('TokenApp', ['satellizer'])
     .config(function($authProvider) {
-
-        console.log(window.location.origin);
-        console.log("{% url 'login_social_token_user' provider='google-oauth2' %}")
+        console.log("{% url 'login_social_token_user' provider='google-oauth2' %}");
+        console.log(window.location.origin + '/');
+        console.log("...");
+        console.log("{% url 'login_social_token_user' provider='facebook' %}");
         $authProvider.facebook({
             url: "{% url 'login_social_token_user' provider='facebook' %}",
             //url: "http://localhost:8000/api/login/social/token_user/facebook",
             clientId: '126883721233688'
         });
         $authProvider.google({
-            url: "http://usuarios.nutrifami.org/api/login/social/token_user/google-oauth2",
+            url: "{% url 'login_social_token_user' provider='google-oauth2' %}",
             //url: "http://localhost:8000/api/login/social/token_user/google-oauth2",
             clientId: '898085701705-07ja94k2e3r3b81oqg2baih6q63ih8i3.apps.googleusercontent.com',
-            redirectUri: "http://usuarios.nutrifami.org"
+            redirectUri: window.location.origin + '/'
         });
 
         $authProvider.authToken = 'Token';
@@ -92,9 +93,9 @@ angular.module('TokenApp', ['satellizer'])
             $auth.authenticate(provider).then(function(response) {
                 $auth.setToken(response.data.token);
                 set_user(response);
-            }).catch(function(response){
-		console.log(response);		
-});
+            }).catch(function(response) {
+                console.log(response);
+            });
         };
 
         $scope.logout = function() {
