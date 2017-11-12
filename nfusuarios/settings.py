@@ -126,7 +126,7 @@ else:
         'DEFAULT_PERMISSION_CLASSES': (
         ),
         'DEFAULT_AUTHENTICATION_CLASSES': (
-            'rest_framework.authentication.SessionAuthentication',
+            #'rest_framework.authentication.SessionAuthentication',
         )
     }
 

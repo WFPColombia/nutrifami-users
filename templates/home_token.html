@@ -61,10 +61,6 @@ function set_user(response) {
 
 angular.module('TokenApp', ['satellizer'])
     .config(function($authProvider) {
-        console.log("{% url 'login_social_token_user' provider='google-oauth2' %}");
-        console.log(window.location.origin + '/');
-        console.log("...");
-        console.log("{% url 'login_social_token_user' provider='facebook' %}");
         $authProvider.facebook({
             url: "{% url 'login_social_token_user' provider='facebook' %}",
             //url: "http://localhost:8000/api/login/social/token_user/facebook",
