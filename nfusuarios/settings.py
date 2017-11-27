@@ -42,13 +42,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
     'rest_framework',
     'rest_framework.authtoken',
     'social_django',
     'rest_social_auth',
     'corsheaders',
-
     'usuarios',
 ]
 
@@ -102,15 +100,7 @@ if platform.linux_distribution()[2] == 'Maipo':
             'PORT': '3306',
         }
     }
-    REST_FRAMEWORK = {
-        'DEFAULT_PERMISSION_CLASSES': (
-            #'rest_framework.permissions.IsAuthenticated',
-        ),
-        'DEFAULT_AUTHENTICATION_CLASSES': (
-            #'rest_framework.authentication.TokenAuthentication',
-            #'rest_framework.authentication.SessionAuthentication',
-        )
-    }
+
 else:
     DATABASES = {
         'default': {
@@ -122,13 +112,17 @@ else:
             'PORT': '',
         }
     }
-    REST_FRAMEWORK = {
-        'DEFAULT_PERMISSION_CLASSES': (
-        ),
-        'DEFAULT_AUTHENTICATION_CLASSES': (
-            #'rest_framework.authentication.SessionAuthentication',
-        )
-    }
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        #'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication'
+    )
+}    
 
 
 # Password validation
@@ -175,7 +169,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
-AUTH_USER_MODEL = 'usuarios.CustomUser'
+AUTH_USER_MODEL = 'usuarios.User'
 
 # DRF settings
 

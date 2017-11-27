@@ -13,28 +13,14 @@ from rest_framework.authentication import SessionAuthentication, TokenAuthentica
 from rest_social_auth.serializers import UserSerializer
 from rest_social_auth.views import JWTAuthMixin
 from django.core import serializers
-from usuarios.serializers import CustomUserSerializer
-from usuarios.models import CustomUser
-
-
-class HomeSessionView(TemplateView):
-    template_name = 'home_session.html'
-
-    @method_decorator(ensure_csrf_cookie)
-    def get(self, request, *args, **kwargs):
-        return super(HomeSessionView, self).get(request, *args, **kwargs)
+from usuarios.serializers import UserSerializer
+from usuarios.models import User
 
 
 class HomeTokenView(TemplateView):
     template_name = 'home_token.html'
 
-
-class HomeJWTView(TemplateView):
-    template_name = 'home_jwt.html'
-
-
 class LogoutSessionView(APIView):
-
     def post(self, request, *args, **kwargs):
         logout(request)
         return Response(status=status.HTTP_204_NO_CONTENT)
@@ -48,18 +34,8 @@ class BaseDetailView(generics.RetrieveAPIView):
     def get_object(self, queryset=None):
         return self.request.user
 
-
-class UserSessionDetailView(BaseDetailView):
-    authentication_classes = (SessionAuthentication, )
-
-
 class UserTokenDetailView(BaseDetailView):
     authentication_classes = (TokenAuthentication, )
-
-
-class UserJWTDetailView(JWTAuthMixin, BaseDetailView):
-    pass
-
 
 class CustomObtainAuthToken(ObtainAuthToken):
 
@@ -67,6 +43,6 @@ class CustomObtainAuthToken(ObtainAuthToken):
         response = super(CustomObtainAuthToken, self).post(
             request, *args, **kwargs)
         token = Token.objects.get(key=response.data['token'])
-        user = CustomUser.objects.get(pk=token.user_id)
-        serializer = CustomUserSerializer(user)
+        user = User.objects.get(pk=token.user_id)
+        serializer = UserSerializer(user)
         return Response({'token': token.key, 'user': serializer.data})

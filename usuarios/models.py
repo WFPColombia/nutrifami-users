@@ -25,7 +25,7 @@ GENDERS = (
 )
 
 
-class CustomUser(AbstractUser):
+class User(AbstractUser):
         #GENDERS = (('male', 'Male'),('female', 'Female'))
     tipo_documento = models.CharField(
         choices=TIPOS_DOCUMENTO, max_length=45, null=True, verbose_name='Tipos de documento')
@@ -50,8 +50,8 @@ class CustomUser(AbstractUser):
     direccion = models.CharField(max_length=45, blank=True, null=True,)
     telefono = models.PositiveIntegerField(
         blank=True, null=True, verbose_name='Teléfono')
-    movil = models.PositiveIntegerField(
-        blank=True, null=True, verbose_name='Telefono móvil')
+    movil = models.PositiveIntegerField(blank=True, null=True, verbose_name='Telefono móvil')
+    movil2 = models.PositiveIntegerField(blank=True, null=True, verbose_name='Telefono móvil 2')
     social_thumb = models.URLField(null=True, blank=True)
 
     class Meta:
@@ -62,9 +62,9 @@ class CustomUser(AbstractUser):
 
 
 class Familiar(models.Model):
-    usuario = models.ForeignKey(CustomUser, related_name='usuario')
+    usuario = models.ForeignKey(User, related_name='usuario')
     familiar = models.ForeignKey(
-        CustomUser, related_name='familiar', blank=True)
+        User, related_name='familiar', blank=True)
     parentesco = models.CharField(
         choices=PARENTESCO, max_length=45, blank=True, null=True, verbose_name='Parentesco')
 
