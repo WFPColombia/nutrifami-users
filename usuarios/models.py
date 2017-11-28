@@ -50,8 +50,10 @@ class User(AbstractUser):
     direccion = models.CharField(max_length=45, blank=True, null=True,)
     telefono = models.PositiveIntegerField(
         blank=True, null=True, verbose_name='Teléfono')
-    movil = models.PositiveIntegerField(blank=True, null=True, verbose_name='Telefono móvil')
-    movil2 = models.PositiveIntegerField(blank=True, null=True, verbose_name='Telefono móvil 2')
+    movil = models.PositiveIntegerField(
+        blank=True, null=True, verbose_name='Telefono móvil')
+    movil2 = models.PositiveIntegerField(
+        blank=True, null=True, verbose_name='Telefono móvil 2')
     social_thumb = models.URLField(null=True, blank=True)
 
     class Meta:
@@ -62,14 +64,40 @@ class User(AbstractUser):
 
 
 class Familiar(models.Model):
-    usuario = models.ForeignKey(User, related_name='usuario')
+    usuario = models.ForeignKey(User, related_name='familiar_usuario')
     familiar = models.ForeignKey(
-        User, related_name='familiar', blank=True)
+        User, related_name='familiar_familiar', blank=True)
     parentesco = models.CharField(
         choices=PARENTESCO, max_length=45, blank=True, null=True, verbose_name='Parentesco')
 
     class Meta:
         verbose_name_plural = "Familiares"
+
+    def __unicode__(self):
+        return unicode(self.usuario)
+
+
+class Avance(models.Model):
+    usuario = models.ForeignKey(User, related_name='avance_usuario')
+    capacitacion = models.PositiveIntegerField(
+        verbose_name='Id Capacitación',  help_text='Número de id de la capacitación',)
+    modulo = models.PositiveIntegerField(
+        verbose_name='Id  Módulo',  help_text='Número de id del módulo',)
+    leccion = models.PositiveIntegerField(
+        verbose_name='Id Lección',  help_text='Número de id de la lección',)
+
+    class Meta:
+        verbose_name_plural = "Avance"
+
+
+class CapacitacionInscrita(models.Model):
+    usuario = models.ForeignKey(
+        User, related_name='capacitacioninscrita_usuario')
+    capacitacion = models.PositiveIntegerField(
+        verbose_name='Id Capacitación',  help_text='Número de id de la capacitación',)
+
+    class Meta:
+        verbose_name_plural = "Capacitaciones Inscritas"
 
     def __unicode__(self):
         return unicode(self.usuario)

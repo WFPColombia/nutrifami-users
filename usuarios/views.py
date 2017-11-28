@@ -10,17 +10,28 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
-from rest_social_auth.serializers import UserSerializer
+from rest_framework.decorators import api_view, detail_route
+#from rest_social_auth.serializers import UserSerializer
 from rest_social_auth.views import JWTAuthMixin
 from django.core import serializers
-from usuarios.serializers import UserSerializer
-from usuarios.models import User
+from usuarios.serializers import UserSerializer, FamiliarSerializer, AvanceSerializer, CapacitacionInscritaSerializer
+from usuarios.models import User, Familiar, Avance, CapacitacionInscrita
 
 
-class HomeTokenView(TemplateView):
-    template_name = 'home_token.html'
+@api_view(['GET'])
+def api_root(request, format=None):
+    return Response({
+        'usuarios': reverse('user-list', request=request, format=format),
+        'recetas': reverse('receta-list', request=request, format=format)
+    })
+
+
+class HomeView(TemplateView):
+    template_name = 'home.html'
+
 
 class LogoutSessionView(APIView):
+
     def post(self, request, *args, **kwargs):
         logout(request)
         return Response(status=status.HTTP_204_NO_CONTENT)
@@ -34,8 +45,10 @@ class BaseDetailView(generics.RetrieveAPIView):
     def get_object(self, queryset=None):
         return self.request.user
 
+
 class UserTokenDetailView(BaseDetailView):
     authentication_classes = (TokenAuthentication, )
+
 
 class CustomObtainAuthToken(ObtainAuthToken):
 
@@ -46,3 +59,35 @@ class CustomObtainAuthToken(ObtainAuthToken):
         user = User.objects.get(pk=token.user_id)
         serializer = UserSerializer(user)
         return Response({'token': token.key, 'user': serializer.data})
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
+
+class FamiliarViewSet(viewsets.ModelViewSet):
+    queryset = Familiar.objects.all()
+    serializer_class = FamiliarSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
+
+class AvanceViewSet(viewsets.ModelViewSet):
+    queryset = Avance.objects.all()
+    serializer_class = AvanceSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
+
+class CapacitacionInscritaViewSet(viewsets.ModelViewSet):
+    queryset = CapacitacionInscrita.objects.all()
+    serializer_class = CapacitacionInscritaSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)

@@ -16,14 +16,12 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
-from rest_framework.authtoken import views as views_rest
 from rest_framework.routers import DefaultRouter
-
-
 from usuarios import views
 
+
 urlpatterns = [
-    
+    url(r'^$', views.HomeView.as_view(), name='home'),
     url(r'^api/', include('usuarios.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^admin/password_reset/$', auth_views.password_reset,
@@ -32,6 +30,6 @@ urlpatterns = [
         auth_views.password_reset_done, name='password_reset_done'),
     url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>.+)/$',
         auth_views.password_reset_confirm, name='password_reset_confirm'),
-     url(r'^reset/done/$', auth_views.password_reset_complete,
+    url(r'^reset/done/$', auth_views.password_reset_complete,
         name='password_reset_complete'),
 ]
