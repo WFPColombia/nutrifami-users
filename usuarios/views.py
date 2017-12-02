@@ -3,13 +3,12 @@ from django.views.generic import TemplateView
 from django.contrib.auth import logout, get_user_model
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import ensure_csrf_cookie
-from rest_framework import generics, status, viewsets
-from rest_framework.permissions import IsAuthenticated
+from rest_framework import generics, status, viewsets, permissions
 from rest_framework.views import APIView
+from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
-from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.decorators import api_view, detail_route
 #from rest_social_auth.serializers import UserSerializer
 from rest_social_auth.views import JWTAuthMixin
@@ -38,7 +37,7 @@ class LogoutSessionView(APIView):
 
 
 class BaseDetailView(generics.RetrieveAPIView):
-    permission_classes = IsAuthenticated,
+    permission_classes = permissions.IsAuthenticated,
     serializer_class = UserSerializer
     model = get_user_model()
 
@@ -67,6 +66,15 @@ class UserViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
+
+
+class CreateUserView(generics.CreateAPIView):
+    model = get_user_model()
+    permission_classes = [
+        permissions.AllowAny  # Or anon users can't register
+    ]
+
+    serializer_class = UserSerializer
 
 
 class FamiliarViewSet(viewsets.ModelViewSet):

@@ -2,8 +2,12 @@
 
 from __future__ import unicode_literals
 
+from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from rest_framework.authtoken.models import Token
 
 TIPOS_DOCUMENTO = (
     ('Cédula de ciudadania', 'Cédula de ciudadania'),
@@ -21,27 +25,38 @@ PARENTESCO = (
 
 GENDERS = (
     ('Masculino', 'Masculino'),
-    ('Femenino', 'Masculino'),
+    ('Femenino', 'Femenino'),
+)
+
+ETNIAS = (
+    ('Afrocolombianos', 'Afrocolombianos'),
+    ('Indigenas', 'Indigenas'),
+    ('Mestizo', 'Mestizo'),
+    ('Otros', 'Otros'),
+    ('Ninguno', 'Ninguno'),
 )
 
 
 class User(AbstractUser):
-        #GENDERS = (('male', 'Male'),('female', 'Female'))
+    email = models.EmailField(
+        verbose_name='Correo electrónico',
+        max_length=255,
+        unique=True,
+    )
     tipo_documento = models.CharField(
-        choices=TIPOS_DOCUMENTO, max_length=45, null=True, verbose_name='Tipos de documento')
+        choices=TIPOS_DOCUMENTO, max_length=45, null=True, verbose_name='Tipo de documento')
     documento = models.PositiveIntegerField(
         blank=True, null=True, verbose_name='documento',  help_text='Número de documento de identidad del usuario',)
     codigo_beneficiario = models.PositiveIntegerField(
         blank=True, null=True, verbose_name='código beneficiario',  help_text='Código asignado por el PMA a sus beneficiarios',)
     jefe_hogar = models.BooleanField(
         default=False, verbose_name='Jefe de hogar', help_text='Determina si el usuario es el jefe de hogar')
-    edad = models.PositiveSmallIntegerField(
-        blank=True, null=True, verbose_name='edad',  help_text='Edad del usuario',)
     genero = models.CharField(max_length=20, null=True,
                               blank=True, choices=GENDERS)
     fecha_nacimiento = models.DateField(
         auto_now=False, auto_now_add=False, blank=True, null=True,)
-    etnia = models.CharField(max_length=45, blank=True, null=True,)
+    etnia = models.CharField(choices=ETNIAS,
+                             max_length=45, blank=True, null=True,)
     pais = models.CharField(max_length=45, blank=True, null=True,)
     departamento = models.CharField(max_length=45, blank=True, null=True,)
     municipio = models.CharField(max_length=45, blank=True, null=True,)
@@ -52,8 +67,6 @@ class User(AbstractUser):
         blank=True, null=True, verbose_name='Teléfono')
     movil = models.PositiveIntegerField(
         blank=True, null=True, verbose_name='Telefono móvil')
-    movil2 = models.PositiveIntegerField(
-        blank=True, null=True, verbose_name='Telefono móvil 2')
     social_thumb = models.URLField(null=True, blank=True)
 
     class Meta:
@@ -101,3 +114,9 @@ class CapacitacionInscrita(models.Model):
 
     def __unicode__(self):
         return unicode(self.usuario)
+
+
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
+def create_auth_token(sender, instance=None, created=False, **kwargs):
+    if created:
+        Token.objects.create(user=instance)
