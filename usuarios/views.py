@@ -15,13 +15,14 @@ from rest_social_auth.views import JWTAuthMixin
 from django.core import serializers
 from usuarios.serializers import UserSerializer, FamiliarSerializer, AvanceSerializer, CapacitacionInscritaSerializer
 from usuarios.models import User, Familiar, Avance, CapacitacionInscrita
+from usuarios.permissions import IsOwnerOrReadOnly
 
 
 @api_view(['GET'])
 def api_root(request, format=None):
     return Response({
-        'usuarios': reverse('user-list', request=request, format=format),
-        'recetas': reverse('receta-list', request=request, format=format)
+        'usuarios': reverse('usuarios-list', request=request, format=format),
+        'avances': reverse('avance-list', request=request, format=format)
     })
 
 
@@ -88,9 +89,11 @@ class FamiliarViewSet(viewsets.ModelViewSet):
 class AvanceViewSet(viewsets.ModelViewSet):
     queryset = Avance.objects.all()
     serializer_class = AvanceSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,
+                          IsOwnerOrReadOnly,)
 
     def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
+        serializer.save(usuario=self.request.user)
 
 
 class CapacitacionInscritaViewSet(viewsets.ModelViewSet):

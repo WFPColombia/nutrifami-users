@@ -14,11 +14,23 @@ class TokenSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class AvanceSerializer(serializers.ModelSerializer):
+
+    #usuario = serializers.ReadOnlyField(source='usuario.username')
+
+    class Meta:
+        model = Avance
+        exclude = ('usuario', 'id')
+
+
 class UserSerializer(serializers.ModelSerializer):
+
+    avances = AvanceSerializer(many=True, read_only=True)
 
     class Meta:
         model = User
-        exclude = ('user_permissions',)
+        #exclude = ('user_permissions',)
+        fields = '__all__'
 
     def create(self, validated_data):
         user = User.objects.create(
@@ -44,13 +56,6 @@ class FamiliarSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Familiar
-        fields = '__all__'
-
-
-class AvanceSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Avance
         fields = '__all__'
 
 

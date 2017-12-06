@@ -91,7 +91,8 @@ class Familiar(models.Model):
 
 
 class Avance(models.Model):
-    usuario = models.ForeignKey(User, related_name='avance_usuario')
+    usuario = models.ForeignKey(
+        User, related_name='avances', on_delete=models.CASCADE)
     capacitacion = models.PositiveIntegerField(
         verbose_name='Id Capacitación',  help_text='Número de id de la capacitación',)
     modulo = models.PositiveIntegerField(
