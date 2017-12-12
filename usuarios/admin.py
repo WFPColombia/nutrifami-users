@@ -33,7 +33,7 @@ class FamiliarAdmin(admin.ModelAdmin):
 
 
 class AvanceAdmin(admin.ModelAdmin):
-    list_display = ['usuario', 'capacitacion', 'modulo', 'leccion']
+    list_display = ['usuario', 'capacitacion', 'modulo', 'leccion', 'fecha']
 
 
 class CapacitacionInscritaAdmin(admin.ModelAdmin):

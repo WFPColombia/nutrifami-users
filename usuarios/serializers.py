@@ -16,11 +16,11 @@ class TokenSerializer(serializers.ModelSerializer):
 
 class AvanceSerializer(serializers.ModelSerializer):
 
-    #usuario = serializers.ReadOnlyField(source='usuario.username')
+    usuario = serializers.ReadOnlyField(source='usuario.id')
 
     class Meta:
         model = Avance
-        exclude = ('usuario', 'id')
+        exclude = ('id',)
 
 
 class UserSerializer(serializers.ModelSerializer):

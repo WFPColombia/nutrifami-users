@@ -22,7 +22,8 @@ urlpatterns = [
 
     #url(r'^api-token-generate/', views.get_all_tokens),
     url(r'^token-auth/', views.CustomObtainAuthToken.as_view()),
-    #url(r'^create-user/', views.CreateUserView.as_view()),
+    url(r'^create-user/', views.CreateUserView.as_view()),
+    url(r'^avance-user/', views.AvanceUserView.as_view()),
     url(r'^login/', include('rest_social_auth.urls_token')),
     url(r'^logout/session/$', views.LogoutSessionView.as_view(), name='logout_session'),
     url(r'^user/token/', views.UserTokenDetailView.as_view(),

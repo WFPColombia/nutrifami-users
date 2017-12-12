@@ -16,6 +16,7 @@ from django.core import serializers
 from usuarios.serializers import UserSerializer, FamiliarSerializer, AvanceSerializer, CapacitacionInscritaSerializer
 from usuarios.models import User, Familiar, Avance, CapacitacionInscrita
 from usuarios.permissions import IsOwnerOrReadOnly
+from rest_framework.permissions import IsAuthenticated
 
 
 @api_view(['GET'])
@@ -64,6 +65,8 @@ class CustomObtainAuthToken(ObtainAuthToken):
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    permission_classes = (IsAuthenticated,) 
+    authentication_classes = (TokenAuthentication,) 
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
@@ -89,12 +92,26 @@ class FamiliarViewSet(viewsets.ModelViewSet):
 class AvanceViewSet(viewsets.ModelViewSet):
     queryset = Avance.objects.all()
     serializer_class = AvanceSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,
-                          IsOwnerOrReadOnly,)
+    #permission_classes = (permissions.IsAuthenticatedOrReadOnly,IsOwnerOrReadOnly,)
+    permission_classes = (IsAuthenticated,) 
+    authentication_classes = (TokenAuthentication,) 
 
     def perform_create(self, serializer):
         serializer.save(usuario=self.request.user)
 
+
+class AvanceUserView(generics.ListAPIView):
+    serializer_class = AvanceSerializer
+    permission_classes = (IsAuthenticated,) 
+    authentication_classes = (TokenAuthentication,) 
+
+    def get_queryset(self):
+        """
+        This view should return a list of all the purchases
+        for the currently authenticated user.
+        """
+        user = self.request.user
+        return Avance.objects.filter(usuario=user)
 
 class CapacitacionInscritaViewSet(viewsets.ModelViewSet):
     queryset = CapacitacionInscrita.objects.all()

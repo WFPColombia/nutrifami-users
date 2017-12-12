@@ -99,6 +99,7 @@ class Avance(models.Model):
         verbose_name='Id  Módulo',  help_text='Número de id del módulo',)
     leccion = models.PositiveIntegerField(
         verbose_name='Id Lección',  help_text='Número de id de la lección',)
+    fecha = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name_plural = "Avance"
