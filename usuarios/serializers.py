@@ -29,8 +29,28 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        #exclude = ('user_permissions',)
-        fields = '__all__'
+        exclude = ('user_permissions', 'password',
+                   'is_superuser', 'is_staff', 'is_active')
+        #fields = '__all__'
+        read_only_fields = ('date_created', 'date_modified',)
+
+    def update(self, instance, validated_data):
+
+        if 'password' in validated_data:
+            password = validated_data.pop('password')
+            instance.set_password(password)
+        return super(UserSerializer, self).update(instance, validated_data)
+
+
+class UserCreateSerializer(serializers.ModelSerializer):
+
+    avances = AvanceSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = User
+        exclude = ('user_permissions',
+                   'is_superuser', 'is_staff', 'is_active')
+        read_only_fields = ('date_created', 'date_modified',)
 
     def create(self, validated_data):
         user = User.objects.create(
@@ -39,17 +59,9 @@ class UserSerializer(serializers.ModelSerializer):
             # first_name=validated_data['first_name'],
             # last_name=validated_data['last_name']
         )
-
         user.set_password(validated_data['password'])
         user.save()
-
         return user
-
-    def update(self, instance, validated_data):
-        if 'password' in validated_data:
-            password = validated_data.pop('password')
-            instance.set_password(password)
-        return super(UserSerializer, self).update(instance, validated_data)
 
 
 class FamiliarSerializer(serializers.ModelSerializer):

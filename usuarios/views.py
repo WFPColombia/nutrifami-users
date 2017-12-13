@@ -13,7 +13,7 @@ from rest_framework.decorators import api_view, detail_route
 #from rest_social_auth.serializers import UserSerializer
 from rest_social_auth.views import JWTAuthMixin
 from django.core import serializers
-from usuarios.serializers import UserSerializer, FamiliarSerializer, AvanceSerializer, CapacitacionInscritaSerializer
+from usuarios.serializers import UserSerializer, UserCreateSerializer, FamiliarSerializer, AvanceSerializer, CapacitacionInscritaSerializer
 from usuarios.models import User, Familiar, Avance, CapacitacionInscrita
 from usuarios.permissions import IsOwnerOrReadOnly
 from rest_framework.permissions import IsAuthenticated
@@ -65,8 +65,8 @@ class CustomObtainAuthToken(ObtainAuthToken):
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = (IsAuthenticated,) 
-    authentication_classes = (TokenAuthentication,) 
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (TokenAuthentication,)
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
@@ -78,7 +78,7 @@ class CreateUserView(generics.CreateAPIView):
         permissions.AllowAny  # Or anon users can't register
     ]
 
-    serializer_class = UserSerializer
+    serializer_class = UserCreateSerializer
 
 
 class FamiliarViewSet(viewsets.ModelViewSet):
@@ -93,8 +93,8 @@ class AvanceViewSet(viewsets.ModelViewSet):
     queryset = Avance.objects.all()
     serializer_class = AvanceSerializer
     #permission_classes = (permissions.IsAuthenticatedOrReadOnly,IsOwnerOrReadOnly,)
-    permission_classes = (IsAuthenticated,) 
-    authentication_classes = (TokenAuthentication,) 
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (TokenAuthentication,)
 
     def perform_create(self, serializer):
         serializer.save(usuario=self.request.user)
@@ -102,8 +102,8 @@ class AvanceViewSet(viewsets.ModelViewSet):
 
 class AvanceUserView(generics.ListAPIView):
     serializer_class = AvanceSerializer
-    permission_classes = (IsAuthenticated,) 
-    authentication_classes = (TokenAuthentication,) 
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (TokenAuthentication,)
 
     def get_queryset(self):
         """
@@ -112,6 +112,7 @@ class AvanceUserView(generics.ListAPIView):
         """
         user = self.request.user
         return Avance.objects.filter(usuario=user)
+
 
 class CapacitacionInscritaViewSet(viewsets.ModelViewSet):
     queryset = CapacitacionInscrita.objects.all()

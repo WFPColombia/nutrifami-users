@@ -42,6 +42,7 @@ class User(AbstractUser):
         verbose_name='Correo electrónico',
         max_length=255,
         unique=True,
+        null=True,
     )
     tipo_documento = models.CharField(
         choices=TIPOS_DOCUMENTO, max_length=45, null=True, verbose_name='Tipo de documento')
