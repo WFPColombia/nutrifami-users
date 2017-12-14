@@ -13,7 +13,7 @@ class UserAdmin(UserAdmin):
     fieldsets = UserAdmin.fieldsets + (
         (
             'Información personal 2', {'fields': (
-                'tipo_documento', 'documento', 'genero', 'fecha_nacimiento')}
+                'id_antiguo', 'tipo_documento', 'documento', 'genero', 'fecha_nacimiento')}
         ), (
             'Ubicación', {'fields': (
                 'pais', 'departamento', 'municipio', 'zona', 'comunidad', 'etnia', 'direccion')}
@@ -23,7 +23,7 @@ class UserAdmin(UserAdmin):
                 'telefono', 'movil')}
         ), (
             'Información PMA', {'fields': (
-                'codigo_beneficiario', 'jefe_hogar')}
+                'codigo_beneficiario', 'jefe_hogar', 'terminos')}
         ),
     )
 

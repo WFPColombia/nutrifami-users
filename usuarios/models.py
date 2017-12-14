@@ -38,6 +38,8 @@ ETNIAS = (
 
 
 class User(AbstractUser):
+    id_antiguo = models.PositiveIntegerField(
+        blank=True, null=True, unique=True, verbose_name='id antiguo',  help_text='Id de la antigua base de datos',)
     email = models.EmailField(
         verbose_name='Correo electrónico',
         max_length=255,
@@ -69,6 +71,8 @@ class User(AbstractUser):
     movil = models.PositiveIntegerField(
         blank=True, null=True, verbose_name='Telefono móvil')
     social_thumb = models.URLField(null=True, blank=True)
+    terminos = models.BooleanField(
+        default=False, verbose_name='Términos y condiciones', help_text='El usuario aceptó términos y cóndiciones')
 
     class Meta:
         verbose_name_plural = "Usuarios"
