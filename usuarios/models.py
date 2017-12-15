@@ -47,7 +47,7 @@ class User(AbstractUser):
         null=True,
     )
     tipo_documento = models.CharField(
-        choices=TIPOS_DOCUMENTO, max_length=45, null=True, verbose_name='Tipo de documento')
+        choices=TIPOS_DOCUMENTO, max_length=45, blank=True, null=True, verbose_name='Tipo de documento')
     documento = models.PositiveIntegerField(
         blank=True, null=True, verbose_name='documento',  help_text='Número de documento de identidad del usuario',)
     codigo_beneficiario = models.PositiveIntegerField(
