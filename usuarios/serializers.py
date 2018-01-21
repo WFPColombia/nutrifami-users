@@ -30,7 +30,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         exclude = ('user_permissions', 'password',
-                   'is_superuser', 'is_staff', 'is_active')
+                   'is_superuser', 'is_active')
         #fields = '__all__'
         read_only_fields = ('date_created', 'date_modified',)
 
