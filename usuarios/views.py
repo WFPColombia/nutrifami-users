@@ -13,8 +13,8 @@ from rest_framework.decorators import api_view, detail_route
 #from rest_social_auth.serializers import UserSerializer
 from rest_social_auth.views import JWTAuthMixin
 from django.core import serializers
-from usuarios.serializers import UserSerializer, UserCreateSerializer, FamiliarSerializer, AvanceSerializer, CapacitacionInscritaSerializer
-from usuarios.models import User, Familiar, Avance, CapacitacionInscrita
+from usuarios.serializers import UserSerializer, UserCreateSerializer, FamiliarSerializer, AvanceSerializer, CapacitacionInscritaSerializer, TrainingSerializer, TraineeSerializer, TraineeAdvanceSerializer
+from usuarios.models import User, Familiar, Avance, CapacitacionInscrita, Training, Trainee, TraineeAdvance
 from usuarios.permissions import IsOwnerOrReadOnly
 from rest_framework.permissions import IsAuthenticated
 
@@ -120,3 +120,30 @@ class CapacitacionInscritaViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
+
+
+class TrainingViewSet(viewsets.ModelViewSet):
+    queryset = Training.objects.all()
+    serializer_class = TrainingSerializer
+    #permission_classes = (permissions.IsAuthenticatedOrReadOnly,IsOwnerOrReadOnly,)
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (TokenAuthentication,)
+
+    def perform_create(self, serializer):
+        serializer.save(usuario=self.request.user)
+
+
+class TraineeViewSet(viewsets.ModelViewSet):
+    queryset = Trainee.objects.all()
+    serializer_class = TraineeSerializer
+    #permission_classes = (permissions.IsAuthenticatedOrReadOnly,IsOwnerOrReadOnly,)
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (TokenAuthentication,)
+
+
+class TraineeAdvanceViewSet(viewsets.ModelViewSet):
+    queryset = TraineeAdvance.objects.all()
+    serializer_class = TraineeAdvanceSerializer
+    #permission_classes = (permissions.IsAuthenticatedOrReadOnly,IsOwnerOrReadOnly,)
+    permission_classes = (IsAuthenticated,)
+    authentication_classes = (TokenAuthentication,)

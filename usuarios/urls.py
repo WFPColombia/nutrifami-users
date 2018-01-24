@@ -10,6 +10,9 @@ router.register(r'familiares', views.FamiliarViewSet)
 router.register(r'avances', views.AvanceViewSet)
 router.register(r'capacitaciones-inscritas',
                 views.CapacitacionInscritaViewSet)
+router.register(r'training', views.TrainingViewSet)
+router.register(r'trainees', views.TraineeViewSet)
+router.register(r'trainee-advance', views.TraineeAdvanceViewSet)
 
 schema_view = get_schema_view(title='Pastebin API')
 

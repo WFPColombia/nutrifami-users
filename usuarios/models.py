@@ -123,6 +123,63 @@ class CapacitacionInscrita(models.Model):
         return unicode(self.usuario)
 
 
+class Trainee(models.Model):
+    name = models.CharField(max_length=45,)
+    document = models.PositiveIntegerField(
+        help_text='Número de documento de identidad del aprendiz',)
+
+    class Meta:
+        verbose_name_plural = "Trainees"
+
+    def __unicode__(self):
+        return unicode(self.name)
+
+
+class TraineeAdvance (models.Model):
+    trainee = models.ForeignKey(
+        Trainee, related_name='trainieeadvence_trainee', on_delete=models.CASCADE)
+    capacitation = models.PositiveIntegerField(
+        verbose_name='Id Capacitación',  help_text='Número de id de la capacitación',)
+    module = models.PositiveIntegerField(
+        verbose_name='Id  Módulo',  help_text='Número de id del módulo',)
+    lesson = models.PositiveIntegerField(
+        verbose_name='Id Lección',  help_text='Número de id de la lección',)
+    date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name_plural = "Trainees Advances"
+
+    def __unicode__(self):
+        return unicode(self.trainee.name)
+
+
+class Community(models.Model):
+    name = models.CharField(max_length=45, blank=True, null=True,)
+    country = models.CharField(max_length=45, blank=True, null=True,)
+    state = models.CharField(max_length=45, blank=True, null=True,)
+    city = models.CharField(max_length=45, blank=True, null=True,)
+    trainees = models.ManyToManyField(Trainee, blank=True)
+
+    class Meta:
+        verbose_name_plural = "Communities"
+
+    def __unicode__(self):
+        return unicode(self.name)
+
+
+class Training(models.Model):
+    trainer = models.ForeignKey(User, related_name='training_trainer')
+    community = models.ForeignKey(Community, related_name='training_community')
+    date = models.DateField(
+        auto_now=False, auto_now_add=False, blank=True, null=True,)
+
+    class Meta:
+        verbose_name_plural = "Trainings"
+
+    def __unicode__(self):
+        return unicode(self.community)
+
+
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_auth_token(sender, instance=None, created=False, **kwargs):
     if created:

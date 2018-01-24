@@ -3,7 +3,7 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
 from rest_framework import serializers
-from usuarios.models import User, Familiar, Avance, CapacitacionInscrita
+from usuarios.models import User, Familiar, Avance, CapacitacionInscrita, Training, Trainee, TraineeAdvance
 from rest_framework.authtoken.models import Token
 
 
@@ -78,3 +78,28 @@ class CapacitacionInscritaSerializer(serializers.ModelSerializer):
     class Meta:
         model = CapacitacionInscrita
         fields = '__all__'
+
+
+class TrainingSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Training
+        fields = '__all__'
+
+
+class TraineeAdvanceSerializer(serializers.ModelSerializer):
+
+    #trainee_document = serializers.ReadOnlyField(source='trainee.document')
+
+    class Meta:
+        model = TraineeAdvance
+        exclude = ('id',)
+
+
+class TraineeSerializer(serializers.ModelSerializer):
+
+    trainee_advance = TraineeAdvanceSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Trainee
+        fields = ('id', 'name', 'document', 'trainee_advance')
