@@ -127,6 +127,7 @@ class Trainee(models.Model):
     name = models.CharField(max_length=45,)
     document = models.PositiveIntegerField(
         help_text='Número de documento de identidad del aprendiz',)
+    date = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name_plural = "Trainees"

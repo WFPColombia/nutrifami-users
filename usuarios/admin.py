@@ -41,7 +41,7 @@ class CapacitacionInscritaAdmin(admin.ModelAdmin):
 
 
 class TraineeAdmin(admin.ModelAdmin):
-    list_display = ['name', 'document']
+    list_display = ['name', 'document', 'date']
     ordering = ('name',)
 
 
