@@ -10,6 +10,7 @@ from usuarios.models import User, Familiar, Avance, CapacitacionInscrita, Commun
 
 
 class UserAdmin(UserAdmin):
+    list_display = UserAdmin.list_display + ('documento', 'id_antiguo')
     fieldsets = UserAdmin.fieldsets + (
         (
             'Información personal 2', {'fields': (
