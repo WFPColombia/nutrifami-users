@@ -66,6 +66,13 @@ class UserCreateSerializer(serializers.ModelSerializer):
         return user
 
 
+class UserCheckSerializer (serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ('username', )
+
+
 class FamiliarSerializer(serializers.ModelSerializer):
 
     class Meta:

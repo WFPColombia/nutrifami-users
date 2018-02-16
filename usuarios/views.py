@@ -1,5 +1,6 @@
 import json
 from django.views.generic import TemplateView
+from django.http import Http404
 from django.contrib.auth import logout, get_user_model
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import ensure_csrf_cookie
@@ -10,10 +11,10 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, detail_route
-#from rest_social_auth.serializers import UserSerializer
+# from rest_social_auth.serializers import UserSerializer
 from rest_social_auth.views import JWTAuthMixin
 from django.core import serializers
-from usuarios.serializers import UserSerializer, UserCreateSerializer, FamiliarSerializer, AvanceSerializer, CapacitacionInscritaSerializer, TrainingSerializer, TraineeSerializer, TraineeAdvanceSerializer
+from usuarios.serializers import UserSerializer, UserCreateSerializer, FamiliarSerializer, AvanceSerializer, CapacitacionInscritaSerializer, TrainingSerializer, TraineeSerializer, TraineeAdvanceSerializer, UserCheckSerializer
 from usuarios.models import User, Familiar, Avance, CapacitacionInscrita, Training, Trainee, TraineeAdvance
 from usuarios.permissions import IsOwnerOrReadOnly
 from rest_framework.permissions import IsAuthenticated
@@ -72,13 +73,29 @@ class UserViewSet(viewsets.ModelViewSet):
         serializer.save(owner=self.request.user)
 
 
-class CreateUserView(generics.CreateAPIView):
+class UserCreateView(generics.CreateAPIView):
     model = get_user_model()
     permission_classes = [
         permissions.AllowAny  # Or anon users can't register
     ]
 
     serializer_class = UserCreateSerializer
+
+
+class UserCheckView(generics.ListAPIView):
+    permission_classes = [
+        permissions.AllowAny  # Or anon users can't register
+    ]
+
+    serializer_class = UserCheckSerializer
+
+    def get_queryset(self):
+        username = self.kwargs['username']
+        data = User.objects.filter(username=username)
+        if len(data) != 0:
+            return data
+        else:
+            raise Http404
 
 
 class FamiliarViewSet(viewsets.ModelViewSet):
@@ -92,7 +109,7 @@ class FamiliarViewSet(viewsets.ModelViewSet):
 class AvanceViewSet(viewsets.ModelViewSet):
     queryset = Avance.objects.all()
     serializer_class = AvanceSerializer
-    #permission_classes = (permissions.IsAuthenticatedOrReadOnly,IsOwnerOrReadOnly,)
+    # permission_classes = (permissions.IsAuthenticatedOrReadOnly,IsOwnerOrReadOnly,)
     permission_classes = (IsAuthenticated,)
     authentication_classes = (TokenAuthentication,)
 
@@ -125,7 +142,7 @@ class CapacitacionInscritaViewSet(viewsets.ModelViewSet):
 class TrainingViewSet(viewsets.ModelViewSet):
     queryset = Training.objects.all()
     serializer_class = TrainingSerializer
-    #permission_classes = (permissions.IsAuthenticatedOrReadOnly,IsOwnerOrReadOnly,)
+    # permission_classes = (permissions.IsAuthenticatedOrReadOnly,IsOwnerOrReadOnly,)
     permission_classes = (IsAuthenticated,)
     authentication_classes = (TokenAuthentication,)
 
@@ -136,7 +153,7 @@ class TrainingViewSet(viewsets.ModelViewSet):
 class TraineeViewSet(viewsets.ModelViewSet):
     queryset = Trainee.objects.all()
     serializer_class = TraineeSerializer
-    #permission_classes = (permissions.IsAuthenticatedOrReadOnly,IsOwnerOrReadOnly,)
+    # permission_classes = (permissions.IsAuthenticatedOrReadOnly,IsOwnerOrReadOnly,)
     permission_classes = (IsAuthenticated,)
     authentication_classes = (TokenAuthentication,)
 
@@ -144,6 +161,6 @@ class TraineeViewSet(viewsets.ModelViewSet):
 class TraineeAdvanceViewSet(viewsets.ModelViewSet):
     queryset = TraineeAdvance.objects.all()
     serializer_class = TraineeAdvanceSerializer
-    #permission_classes = (permissions.IsAuthenticatedOrReadOnly,IsOwnerOrReadOnly,)
+    # permission_classes = (permissions.IsAuthenticatedOrReadOnly,IsOwnerOrReadOnly,)
     permission_classes = (IsAuthenticated,)
     authentication_classes = (TokenAuthentication,)
