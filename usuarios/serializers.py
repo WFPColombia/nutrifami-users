@@ -5,6 +5,7 @@ sys.setdefaultencoding('utf-8')
 from rest_framework import serializers
 from usuarios.models import User, Familiar, Avance, CapacitacionInscrita, Training, Trainee, TraineeAdvance
 from rest_framework.authtoken.models import Token
+from django.contrib.auth.models import Group
 
 
 class TokenSerializer(serializers.ModelSerializer):
@@ -22,10 +23,16 @@ class AvanceSerializer(serializers.ModelSerializer):
         model = Avance
         exclude = ('id',)
 
+class GroupSerializer(serializers.ModelSerializer):    
+    class Meta:
+        model = Group
+        fields = ('name',)
+
 
 class UserSerializer(serializers.ModelSerializer):
 
     avances = AvanceSerializer(many=True, read_only=True)
+    groups = GroupSerializer(many=True)
 
     class Meta:
         model = User
