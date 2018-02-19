@@ -23,7 +23,8 @@ class AvanceSerializer(serializers.ModelSerializer):
         model = Avance
         exclude = ('id',)
 
-class GroupSerializer(serializers.ModelSerializer):    
+
+class GroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = Group
         fields = ('name',)
@@ -32,7 +33,7 @@ class GroupSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
 
     avances = AvanceSerializer(many=True, read_only=True)
-    groups = GroupSerializer(many=True)
+    groups = GroupSerializer(many=True, read_only=True)
 
     class Meta:
         model = User
