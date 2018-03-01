@@ -1,0 +1,25 @@
+{
+    "DEBUG": "True",
+    "DATABASES":
+    {
+        "NAME": "database_name",
+        "USER": "root",
+        "PASSWORD": "",
+        "HOST": "127.0.0.1",
+        "PORT": ""
+    },
+    "SOCIAL_AUTH":
+    {
+        "SOCIAL_AUTH_FACEBOOK_KEY": "your_facebook_key",
+        "SOCIAL_AUTH_FACEBOOK_SECRET": "your_facebook_secret",
+        "SOCIAL_AUTH_GOOGLE_OAUTH2_KEY": "your_google_key",
+        "SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET": "your_google_secret"
+    },
+    "MAIL":
+    {
+        "EMAIL_HOST": "smtp.gmail.com",
+        "EMAIL_HOST_PASSWORD": "your_mail_password",
+        "EMAIL_HOST_USER": "your_mail",
+        "EMAIL_PORT": "587"
+    }
+}

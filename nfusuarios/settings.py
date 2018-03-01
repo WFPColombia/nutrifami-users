@@ -12,9 +12,14 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 
 import os
 import platform
+import json
+
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+MY_SETTINGS = json.load(open(BASE_DIR +"/nfusuarios/settings.json"))
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -25,10 +30,9 @@ SECRET_KEY = '@uh_sy4kzizdba^f&-ai&0&e4u8t*je0f)@iu-!lt(pvj!4v@l'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # SECURITY WARNING: don't run with debug turned on in production!
-if platform.linux_distribution()[2] == 'Maipo':
-    DEBUG = False
-else:
-    DEBUG = True
+
+DEBUG = MY_SETTINGS["DEBUG"]
+
 
 ALLOWED_HOSTS = ["127.0.0.1", "localhost", "usuarios.nutrifami.org"]
 
@@ -89,29 +93,18 @@ WSGI_APPLICATION = 'nfusuarios.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
-if platform.linux_distribution()[2] == 'Maipo':
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'nfusuarios',
-            'USER': 'nfusuarios',
-            'PASSWORD': 'nfusuarios.pro.2017.web',
-            'HOST': 'nutrifami.cwy5i3r1f6xk.us-east-1.rds.amazonaws.com',
-            'PORT': '3306',
-        }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': MY_SETTINGS["DATABASES"]["NAME"],
+        'USER':  MY_SETTINGS["DATABASES"]["USER"],
+        'PASSWORD': MY_SETTINGS["DATABASES"]["PASSWORD"],
+        'HOST': MY_SETTINGS["DATABASES"]["HOST"],
+        'PORT': MY_SETTINGS["DATABASES"]["PORT"],
     }
+}
 
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'nfusuarios',
-            'USER': 'root',
-            'PASSWORD': '',
-            'HOST': '127.0.0.1',
-            'PORT': '',
-        }
-    }
+
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
@@ -175,12 +168,10 @@ AUTH_USER_MODEL = 'usuarios.User'
 
 # social auth settings
 # valid redirect domain for all apps: http://restsocialexample.com:8000/
-if platform.linux_distribution()[2] == 'Maipo':
-    SOCIAL_AUTH_FACEBOOK_KEY = '126883721233688'
-    SOCIAL_AUTH_FACEBOOK_SECRET = 'e3c68fe71f6fdb66a52e34cb4e40aaa2'
-else:
-    SOCIAL_AUTH_FACEBOOK_KEY = '277975186032137'
-    SOCIAL_AUTH_FACEBOOK_SECRET = '2c166031eb9032b92d1aa149e5fd1f2c'
+
+SOCIAL_AUTH_FACEBOOK_KEY =  MY_SETTINGS["SOCIAL_AUTH"]["SOCIAL_AUTH_FACEBOOK_KEY"]
+SOCIAL_AUTH_FACEBOOK_SECRET =  MY_SETTINGS["SOCIAL_AUTH"]["SOCIAL_AUTH_FACEBOOK_SECRET"]
+
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email', ]
 SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
     'fields': ','.join([
@@ -192,8 +183,8 @@ SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
     ]),
 }
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '898085701705-07ja94k2e3r3b81oqg2baih6q63ih8i3.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'GwoNQ4ALS0evf1vVZBgRbEJq'
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = MY_SETTINGS["SOCIAL_AUTH"]["SOCIAL_AUTH_GOOGLE_OAUTH2_KEY"]
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = MY_SETTINGS["SOCIAL_AUTH"]["SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET"]
 SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = ['email', ]
 
 AUTHENTICATION_BACKENDS = (
@@ -247,8 +238,8 @@ LOGGING = {
 CORS_ORIGIN_ALLOW_ALL = True
 EMAIL_USE_TLS = True
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_PASSWORD = 'pmacolombia'
-EMAIL_HOST_USER = 'nutrifamipma@gmail.com'
-EMAIL_PORT = 587
+EMAIL_HOST =  MY_SETTINGS["MAIL"]["EMAIL_HOST"]
+EMAIL_HOST_PASSWORD = MY_SETTINGS["MAIL"]["EMAIL_HOST_PASSWORD"]
+EMAIL_HOST_USER = MY_SETTINGS["MAIL"]["EMAIL_HOST_USER"]
+EMAIL_PORT =  MY_SETTINGS["MAIL"]["EMAIL_PORT"]
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
