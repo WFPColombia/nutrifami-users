@@ -15,7 +15,6 @@ import platform
 import json
 
 
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MY_SETTINGS = json.load(open(BASE_DIR +"/nfusuarios/settings.json"))
@@ -26,7 +25,7 @@ MY_SETTINGS = json.load(open(BASE_DIR +"/nfusuarios/settings.json"))
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '@uh_sy4kzizdba^f&-ai&0&e4u8t*je0f)@iu-!lt(pvj!4v@l'
+SECRET_KEY = MY_SETTINGS["SECRET_KEY"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # SECURITY WARNING: don't run with debug turned on in production!

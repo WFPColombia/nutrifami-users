@@ -1,5 +1,6 @@
 {
     "DEBUG": "True",
+    "SECRET_KEY": "my_secret_key",
     "DATABASES":
     {
         "NAME": "database_name",
