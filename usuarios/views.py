@@ -159,7 +159,7 @@ class TraineeViewSet(viewsets.ModelViewSet):
 
 
 class TraineeAdvanceViewSet(viewsets.ModelViewSet):
-    queryset = TraineeAdvance.objects.all()
+    queryset = Avance.objects.all()
     serializer_class = TraineeAdvanceSerializer
     # permission_classes = (permissions.IsAuthenticatedOrReadOnly,IsOwnerOrReadOnly,)
     permission_classes = (IsAuthenticated,)

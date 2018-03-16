@@ -63,10 +63,6 @@ class UserCreateSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = User.objects.create(
             username=validated_data['username'],
-            email=validated_data['email'],
-            first_name=validated_data['first_name'],
-            last_name=validated_data['last_name'],
-            id_antiguo=validated_data['id_antiguo'],
             terminos=validated_data['terminos']
         )
         user.set_password(validated_data['password'])
@@ -78,7 +74,7 @@ class UserCheckSerializer (serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('username', )
+        fields = ('id', 'username')
 
 
 class FamiliarSerializer(serializers.ModelSerializer):
@@ -107,7 +103,7 @@ class TraineeAdvanceSerializer(serializers.ModelSerializer):
     #trainee_document = serializers.ReadOnlyField(source='trainee.document')
 
     class Meta:
-        model = TraineeAdvance
+        model = Avance
         exclude = ('id',)
 
 
