@@ -11,8 +11,7 @@ from rest_framework.authtoken.models import Token
 
 TIPOS_DOCUMENTO = (
     ('Cédula de ciudadania', 'Cédula de ciudadania'),
-    ('Cédula de extranjeria', 'Cédula de extranjeria'),
-    ('Tarjeta de identidad', 'Tarjeta de identidad'),
+    ('Otro', 'Otro'),
     ('Pasaporte', 'Pasaporte'),
 )
 
@@ -58,8 +57,7 @@ class User(AbstractUser):
                               blank=True, choices=GENDERS)
     fecha_nacimiento = models.DateField(
         auto_now=False, auto_now_add=False, blank=True, null=True,)
-    etnia = models.CharField(choices=ETNIAS,
-                             max_length=45, blank=True, null=True,)
+    etnia = models.CharField(max_length=45, blank=True, null=True,)
     pais = models.CharField(max_length=45, blank=True, null=True,)
     departamento = models.CharField(max_length=45, blank=True, null=True,)
     municipio = models.CharField(max_length=45, blank=True, null=True,)
