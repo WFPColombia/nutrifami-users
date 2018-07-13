@@ -15,6 +15,17 @@ TIPOS_DOCUMENTO = (
     ('Pasaporte', 'Pasaporte'),
 )
 
+TIPOS_USUARIOS = (
+    ('Director', 'Director'),
+    ('Profesor', 'Profesor'),
+    ('Encargado del Comedor', 'Encargado del Comedor'),
+    ('Cocinero', 'Cocinero'),
+    ('Jefe de Cocina', 'Jefe de Cocina'),
+    ('Comité de Gestión', 'Comité de Gestión'),
+    ('Estudiante', 'Estudiante'),
+    ('Otro', 'Otro'),
+)
+
 PARENTESCO = (
     ('Padre', 'Padre'),
     ('Madre', 'Madre'),
@@ -33,6 +44,12 @@ ETNIAS = (
     ('Mestizo', 'Mestizo'),
     ('Otros', 'Otros'),
     ('Ninguno', 'Ninguno'),
+)
+
+LANGUAGES = (
+    ('es', 'es'),
+    ('en', 'en'),
+    ('fr', 'fr'),
 )
 
 
@@ -71,6 +88,12 @@ class User(AbstractUser):
     social_thumb = models.URLField(null=True, blank=True)
     terminos = models.BooleanField(
         default=False, verbose_name='Términos y condiciones', help_text='El usuario aceptó términos y cóndiciones')
+
+    tipo_usuario = models.CharField(
+        choices=TIPOS_USUARIOS, max_length=45, blank=True, null=True, verbose_name='Tipo de usuario')
+
+    language = models.CharField(
+        choices=LANGUAGES, max_length=45, blank=True, null=True, verbose_name='Idioma del usuario')
 
     class Meta:
         verbose_name_plural = "Usuarios"
