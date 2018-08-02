@@ -52,7 +52,6 @@ LANGUAGES = (
     ('fr', 'fr'),
 )
 
-
 class User(AbstractUser):
     id_antiguo = models.PositiveIntegerField(
         blank=True, null=True, unique=True, verbose_name='id antiguo',  help_text='Id de la antigua base de datos',)
@@ -94,6 +93,8 @@ class User(AbstractUser):
 
     language = models.CharField(
         choices=LANGUAGES, max_length=45, blank=True, null=True, verbose_name='Idioma del usuario')
+    is_trainee = models.BooleanField(
+        default=False, verbose_name='Is trainee', help_text='For a person who did made the capacitation offline')
 
     class Meta:
         verbose_name_plural = "Usuarios"

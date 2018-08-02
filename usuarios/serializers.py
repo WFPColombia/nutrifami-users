@@ -61,9 +61,14 @@ class UserCreateSerializer(serializers.ModelSerializer):
         read_only_fields = ('date_created', 'date_modified',)
 
     def create(self, validated_data):
+        if 'is_trainee' in validated_data.keys():
+          trainee = validated_data['is_trainee']
+        else:
+          trainee = False
         user = User.objects.create(
             username=validated_data['username'],
-            terminos=validated_data['terminos']
+            terminos=validated_data['terminos'],
+            is_trainee=trainee
         )
         user.set_password(validated_data['password'])
         user.save()

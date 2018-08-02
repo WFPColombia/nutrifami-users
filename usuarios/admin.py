@@ -14,7 +14,7 @@ class UserAdmin(UserAdmin):
     fieldsets = UserAdmin.fieldsets + (
         (
             'Información personal 2', {'fields': (
-                'id_antiguo', 'tipo_documento', 'documento', 'tipo_usuario', 'genero', 'fecha_nacimiento')}
+                'id_antiguo', 'tipo_documento', 'documento', 'tipo_usuario', 'is_trainee', 'genero', 'fecha_nacimiento')}
         ), (
             'Ubicación', {'fields': (
                 'language', 'pais', 'departamento', 'municipio', 'zona', 'comunidad', 'etnia', 'direccion')}
