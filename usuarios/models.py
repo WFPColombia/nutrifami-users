@@ -104,9 +104,9 @@ class User(AbstractUser):
 
 
 class Familiar(models.Model):
-    usuario = models.ForeignKey(User, related_name='familiar_usuario')
+    usuario = models.ForeignKey(User, related_name='familiar_usuario', on_delete=models.CASCADE)
     familiar = models.ForeignKey(
-        User, related_name='familiar_familiar', blank=True)
+        User, related_name='familiar_familiar', blank=True, on_delete=models.CASCADE)
     parentesco = models.CharField(
         choices=PARENTESCO, max_length=45, blank=True, null=True, verbose_name='Parentesco')
 
@@ -134,7 +134,7 @@ class Avance(models.Model):
 
 class CapacitacionInscrita(models.Model):
     usuario = models.ForeignKey(
-        User, related_name='capacitacioninscrita_usuario')
+        User, related_name='capacitacioninscrita_usuario', on_delete=models.CASCADE)
     capacitacion = models.PositiveIntegerField(
         verbose_name='Id Capacitación',  help_text='Número de id de la capacitación',)
 
@@ -191,8 +191,8 @@ class Community(models.Model):
 
 
 class Training(models.Model):
-    trainer = models.ForeignKey(User, related_name='training_trainer')
-    community = models.ForeignKey(Community, related_name='training_community')
+    trainer = models.ForeignKey(User, related_name='training_trainer', on_delete=models.CASCADE)
+    community = models.ForeignKey(Community, related_name='training_community', on_delete=models.CASCADE)
     date = models.DateField(
         auto_now=False, auto_now_add=False, blank=True, null=True,)
 
